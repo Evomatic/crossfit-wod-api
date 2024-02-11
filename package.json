@@ -2,6 +2,16 @@
   "name": "crossfit-wod-api",
   "version": "1.0.0",
   "description": "",
+  "nodemonConfig": {
+    "watch": [
+      "server"
+    ],
+    "ext": "ts",
+    "delay": "3",
+    "execMap": {
+      "ts": "ts-node"
+    }
+  },
   "main": "src/index.js",
   "scripts": {
     "build": "tsc",
