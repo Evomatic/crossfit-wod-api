@@ -1,23 +1,20 @@
-import express, { Router, Request, Response } from "express";
+import express, { Router } from "express";
+import {
+  getAllWorkouts,
+  getExistingWorkout,
+  updateExistingWorkout,
+  createNewWorkout,
+  deleteExistingWorkout,
+} from "../controllers/workoutController";
 
 export const v1workoutRouter: Router = express.Router();
 
-v1workoutRouter.get("/", (req: Request, res: Response) => {
-  res.send("get all workouts");
-});
+v1workoutRouter.get("/", getAllWorkouts);
 
-v1workoutRouter.get("/:workoutId", (req: Request, res: Response) => {
-  res.send("Get an existing workout");
-});
+v1workoutRouter.get("/:workoutId", getExistingWorkout);
 
-v1workoutRouter.post("/", (req: Request, res: Response) => {
-  res.send("Create a new workout");
-});
+v1workoutRouter.post("/", updateExistingWorkout);
 
-v1workoutRouter.patch("/:workoutId", (req: Request, res: Response) => {
-  res.send("Update an existing workout");
-});
+v1workoutRouter.patch("/:workoutId", createNewWorkout);
 
-v1workoutRouter.delete("/:workoutId", (req: Request, res: Response) => {
-  res.send("Delete an existing workout");
-});
+v1workoutRouter.delete("/:workoutId", deleteExistingWorkout);
