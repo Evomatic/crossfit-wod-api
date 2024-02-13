@@ -10,7 +10,7 @@ import { Request, Response } from "express";
 
 export const getAllWorkouts = (req: Request, res: Response) => {
   const allWorkouts = getAllWorkoutsService();
-  res.send("Get all workouts");
+  res.send({ status: "OK", data: allWorkouts });
 };
 
 export const getExistingWorkout = (req: Request, res: Response) => {

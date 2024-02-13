@@ -1,5 +1,8 @@
+import { getAllWorkouts } from "../../database/Workout";
+
 export const getAllWorkoutsService = () => {
-  return;
+  const allWorkouts = getAllWorkouts();
+  return allWorkouts;
 };
 
 export const getExistingWorkoutService = () => {
