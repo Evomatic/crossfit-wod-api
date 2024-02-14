@@ -19,6 +19,8 @@ export const getExistingWorkout = (req: Request, res: Response) => {
 };
 
 export const createNewWorkout = (req: Request, res: Response) => {
+  const { body } = req;
+  console.log(Object.entries(body).every(([key, value]) => key[value]));
   const newWorkout = createNewWorkoutService();
   res.send("Create a new workout");
 };
