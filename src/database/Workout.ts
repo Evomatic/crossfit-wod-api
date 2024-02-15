@@ -30,3 +30,10 @@ export const createNewWorkout = (newWorkout: Workout) => {
   saveToDatabase(workouts);
   return newWorkout;
 };
+
+export const getExistingWorkout = (workoutId: string) => {
+  const result = workouts.filter((workout) => workout.id === workoutId);
+  if (result.length === 0) return `Workout: ${workoutId} does not exist.`;
+  const [workout] = result;
+  return workout;
+};

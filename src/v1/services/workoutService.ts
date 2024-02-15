@@ -2,6 +2,7 @@ import {
   NewWorkout,
   getAllWorkouts,
   createNewWorkout,
+  getExistingWorkout,
 } from "../../database/Workout";
 import { v4 as uuidv4 } from "uuid";
 
@@ -12,8 +13,9 @@ export const getAllWorkoutsService = () => {
   return allWorkouts;
 };
 
-export const getExistingWorkoutService = () => {
-  return;
+export const getExistingWorkoutService = (workoutId: string) => {
+  const existingWorkout = getExistingWorkout(workoutId);
+  return existingWorkout;
 };
 
 export const createNewWorkoutService = (newWorkout: NewWorkout) => {

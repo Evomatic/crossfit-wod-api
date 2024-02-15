@@ -15,8 +15,15 @@ export const getAllWorkouts = (req: Request, res: Response) => {
 };
 
 export const getExistingWorkout = (req: Request, res: Response) => {
-  const existingWorkout = getExistingWorkoutService();
-  res.send("Get an existing workout");
+  const result = validationResult(req);
+  if (result.isEmpty()) {
+    const {
+      params: { workoutId },
+    } = req;
+    const existingWorkout = getExistingWorkoutService(workoutId);
+    return res.status(200).send({ status: "OK", data: existingWorkout });
+  }
+  res.send({ errors: result.array() });
 };
 
 export const createNewWorkout = (req: Request, res: Response) => {
