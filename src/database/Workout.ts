@@ -11,6 +11,8 @@ type Workout = {
   trainerTips: string[];
 };
 
+export type NewWorkout = Omit<Workout, "id" | "createdAt" | "updatedAt">;
+
 type Workouts = Workout[];
 
 const workouts = db.workouts as Workouts;

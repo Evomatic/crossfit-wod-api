@@ -7,6 +7,7 @@ import {
   deleteExistingWorkout,
 } from "../controllers/workoutController";
 import bodyParser from "body-parser";
+import { check } from "express-validator";
 
 const jsonParser = bodyParser.json();
 
@@ -16,7 +17,14 @@ v1workoutRouter.get("/", getAllWorkouts);
 
 v1workoutRouter.get("/:workoutId", getExistingWorkout);
 
-v1workoutRouter.post("/", jsonParser, createNewWorkout);
+v1workoutRouter.post(
+  "/",
+  jsonParser,
+  check(["name", "mode", "equipment", "exercises", "trainerTips"])
+    .notEmpty()
+    .escape(),
+  createNewWorkout
+);
 
 v1workoutRouter.patch("/:workoutId", jsonParser, updateExistingWorkout);
 
