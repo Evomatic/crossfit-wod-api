@@ -30,6 +30,14 @@ v1workoutRouter.post(
   createNewWorkout
 );
 
-v1workoutRouter.patch("/:workoutId", jsonParser, updateExistingWorkout);
+v1workoutRouter.patch(
+  "/:workoutId",
+  jsonParser,
+  check(["name", "mode", "equipment", "exercises", "trainerTips"])
+    .notEmpty()
+    .optional()
+    .escape(),
+  updateExistingWorkout
+);
 
 v1workoutRouter.delete("/:workoutId", deleteExistingWorkout);

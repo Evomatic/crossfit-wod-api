@@ -1,8 +1,9 @@
 import {
-  NewWorkout,
+  Workout,
   getAllWorkouts,
   createNewWorkout,
   getExistingWorkout,
+  updateExistingWorkout,
 } from "../../database/Workout";
 import { v4 as uuidv4 } from "uuid";
 
@@ -18,7 +19,7 @@ export const getExistingWorkoutService = (workoutId: string) => {
   return existingWorkout;
 };
 
-export const createNewWorkoutService = (newWorkout: NewWorkout) => {
+export const createNewWorkoutService = (newWorkout: Workout) => {
   const workoutToInsert = {
     ...newWorkout,
     id: uuidv4(),
@@ -29,8 +30,12 @@ export const createNewWorkoutService = (newWorkout: NewWorkout) => {
   return createdWorkout;
 };
 
-export const updateExistingWorkoutService = () => {
-  return;
+export const updateExistingWorkoutService = (
+  workoutId: string,
+  body: Workout
+) => {
+  const updatedWorkout = updateExistingWorkout(workoutId, body);
+  return updatedWorkout;
 };
 
 export const deleteExistingWorkoutService = () => {

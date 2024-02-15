@@ -2,17 +2,15 @@ import db from "./db.json";
 import { saveToDatabase } from "./utils";
 
 export type Workout = {
-  id: string;
-  name: string;
-  mode: string;
-  equipment: string[];
-  exercises: string[];
-  createdAt: string;
-  updatedAt: string;
-  trainerTips: string[];
+  id?: string;
+  name?: string;
+  mode?: string;
+  equipment?: string[];
+  exercises?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+  trainerTips?: string[];
 };
-
-export type NewWorkout = Omit<Workout, "id" | "createdAt" | "updatedAt">;
 
 export type Workouts = Workout[];
 
@@ -36,4 +34,18 @@ export const getExistingWorkout = (workoutId: string) => {
   if (result.length === 0) return `Workout: ${workoutId} does not exist.`;
   const [workout] = result;
   return workout;
+};
+
+export const updateExistingWorkout = (workoutId: string, body: Workout) => {
+  const result = workouts.filter((workout) => workout.id === workoutId);
+  if (result.length === 0) return `Workout: ${workoutId} does not exist.`;
+  const [workout] = result;
+
+  for (const [key, value] of Object.entries(body)) {
+    if (Object.hasOwn(workout, key)) {
+      workout[key] = value;
+      //TODO Finish business logic of what to do when patching workout
+    }
+  }
+  return;
 };

@@ -7,7 +7,7 @@ import {
 } from "../services/workoutService";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { NewWorkout } from "../../database/Workout";
+import { Workout } from "../../database/Workout";
 
 export const getAllWorkouts = (req: Request, res: Response) => {
   const allWorkouts = getAllWorkoutsService();
@@ -33,7 +33,7 @@ export const createNewWorkout = (req: Request, res: Response) => {
       body: { name, mode, equipment, exercises, trainerTips },
     } = req;
 
-    const newWorkout: NewWorkout = {
+    const newWorkout: Workout = {
       name,
       mode,
       equipment,
@@ -49,8 +49,16 @@ export const createNewWorkout = (req: Request, res: Response) => {
 };
 
 export const updateExistingWorkout = (req: Request, res: Response) => {
-  const updateWorkout = updateExistingWorkoutService();
-  res.send("Update existing workout");
+  const result = validationResult(req);
+  if (result.isEmpty()) {
+    const {
+      params: { workoutId },
+      body,
+    } = req;
+    const updateWorkout = updateExistingWorkoutService(workoutId, body);
+    return res.status(201).send({ status: "OK", data: updateWorkout });
+  }
+  res.send({ errors: result.array() });
 };
 
 export const deleteExistingWorkout = (req: Request, res: Response) => {
