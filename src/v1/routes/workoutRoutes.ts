@@ -40,4 +40,8 @@ v1workoutRouter.patch(
   updateExistingWorkout
 );
 
-v1workoutRouter.delete("/:workoutId", deleteExistingWorkout);
+v1workoutRouter.delete(
+  "/:workoutId",
+  param("workoutId").isUUID(4),
+  deleteExistingWorkout
+);

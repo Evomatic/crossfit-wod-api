@@ -56,3 +56,11 @@ export const updateExistingWorkout = (workoutId: string, body: Workout) => {
   saveToDatabase(workouts);
   return workout;
 };
+
+export const deleteExistingWorkout = (workoutId: string) => {
+  const result = workouts.filter((workout) => workout.id !== workoutId);
+  if (result.length === workouts.length)
+    return `Workout: ${workoutId} does not exist.`;
+  saveToDatabase(result);
+  return "Workout deleted!";
+};
