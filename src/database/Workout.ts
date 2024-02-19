@@ -28,10 +28,21 @@ export const getAllWorkouts = () => {
 export const createNewWorkout = (newWorkout: Workout) => {
   const isAlreadyAdded =
     workouts.findIndex((workout) => workout.name === newWorkout.name) > -1;
-  if (isAlreadyAdded) return;
-  workouts.push(newWorkout);
-  saveToDatabase(workouts);
-  return newWorkout;
+  if (isAlreadyAdded) {
+    throw {
+      status: 400,
+      message: `Workout with the name ${newWorkout.name}`,
+    };
+  }
+  try {
+    workouts.push(newWorkout);
+    saveToDatabase(workouts);
+    return newWorkout;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
 };
 
 export const getExistingWorkout = (workoutId: string) => {

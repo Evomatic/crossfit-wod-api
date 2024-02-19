@@ -26,7 +26,10 @@ v1workoutRouter.post(
   jsonParser,
   check(["name", "mode", "equipment", "exercises", "trainerTips"])
     .notEmpty()
-    .escape(),
+    .escape()
+    .withMessage(
+      "The following key (path) is missing or is empty in request body."
+    ),
   createNewWorkout
 );
 

@@ -26,8 +26,12 @@ export const createNewWorkoutService = (newWorkout: Workout) => {
     createdAt: newDate(),
     updatedAt: newDate(),
   };
-  const createdWorkout = createNewWorkout(workoutToInsert);
-  return createdWorkout;
+  try {
+    const createdWorkout = createNewWorkout(workoutToInsert);
+    return createdWorkout;
+  } catch (error) {
+    return error;
+  }
 };
 
 export const updateExistingWorkoutService = (
