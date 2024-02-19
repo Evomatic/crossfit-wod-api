@@ -1,5 +1,5 @@
 import db from "./db.json";
-import { saveToDatabase } from "./utils";
+import { saveToDatabase, newDate } from "./utils";
 
 export type Workout = {
   [key: string]: string | string[] | undefined;
@@ -49,6 +49,7 @@ export const updateExistingWorkout = (workoutId: string, body: Workout) => {
   for (const [key, value] of Object.entries(body)) {
     if (Object.hasOwn(workout, key)) {
       workout[key] = value;
+      workout["updatedAt"] = newDate();
     }
   }
   const index = workouts.indexOf(workout);

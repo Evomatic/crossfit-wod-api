@@ -6,3 +6,6 @@ export const saveToDatabase = (db: Workouts) => {
     encoding: "utf-8",
   });
 };
+
+export const newDate = () =>
+  new Date().toLocaleString("en-US", { timeZone: "UTC" });

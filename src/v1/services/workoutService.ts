@@ -7,8 +7,7 @@ import {
   deleteExistingWorkout,
 } from "../../database/Workout";
 import { v4 as uuidv4 } from "uuid";
-
-const newDate = () => new Date().toLocaleString("en-US", { timeZone: "UTC" });
+import { newDate } from "../../database/utils";
 
 export const getAllWorkoutsService = () => {
   const allWorkouts = getAllWorkouts();
