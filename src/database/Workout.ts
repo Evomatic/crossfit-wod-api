@@ -2,6 +2,7 @@ import db from "./db.json";
 import { saveToDatabase } from "./utils";
 
 export type Workout = {
+  [key: string]: string | string[] | undefined;
   id?: string;
   name?: string;
   mode?: string;
@@ -15,6 +16,10 @@ export type Workout = {
 export type Workouts = Workout[];
 
 const workouts = db.workouts as Workouts;
+
+function filterWorkoutById(workoutId: string) {
+  return workouts.filter((workout) => workout.id === workoutId);
+}
 
 export const getAllWorkouts = () => {
   return workouts;
@@ -30,22 +35,24 @@ export const createNewWorkout = (newWorkout: Workout) => {
 };
 
 export const getExistingWorkout = (workoutId: string) => {
-  const result = workouts.filter((workout) => workout.id === workoutId);
+  const result = filterWorkoutById(workoutId);
   if (result.length === 0) return `Workout: ${workoutId} does not exist.`;
   const [workout] = result;
   return workout;
 };
 
 export const updateExistingWorkout = (workoutId: string, body: Workout) => {
-  const result = workouts.filter((workout) => workout.id === workoutId);
+  const result = filterWorkoutById(workoutId);
   if (result.length === 0) return `Workout: ${workoutId} does not exist.`;
   const [workout] = result;
 
   for (const [key, value] of Object.entries(body)) {
     if (Object.hasOwn(workout, key)) {
       workout[key] = value;
-      //TODO Finish business logic of what to do when patching workout
     }
   }
-  return;
+  const index = workouts.indexOf(workout);
+  workouts.splice(index, 1, workout);
+  saveToDatabase(workouts);
+  return workout;
 };
