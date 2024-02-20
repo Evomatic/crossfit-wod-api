@@ -13,6 +13,10 @@ export type Workout = {
   trainerTips?: string[];
 };
 
+export class StatusError extends Error {
+  status: number | undefined;
+}
+
 export type Workouts = Workout[];
 
 const workouts = db.workouts as Workouts;
@@ -29,10 +33,10 @@ export const createNewWorkout = (newWorkout: Workout) => {
   const isAlreadyAdded =
     workouts.findIndex((workout) => workout.name === newWorkout.name) > -1;
   if (isAlreadyAdded) {
-    throw {
-      status: 400,
-      message: `Workout with the name ${newWorkout.name}`,
-    };
+    const statusError = new StatusError();
+    statusError.status = 400;
+    statusError.message = `Workout with the name ${newWorkout.name} already exists.`;
+    throw statusError;
   }
   try {
     workouts.push(newWorkout);

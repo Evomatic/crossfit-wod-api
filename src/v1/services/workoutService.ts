@@ -30,7 +30,8 @@ export const createNewWorkoutService = (newWorkout: Workout) => {
     const createdWorkout = createNewWorkout(workoutToInsert);
     return createdWorkout;
   } catch (error) {
-    return error;
+    console.log(error);
+    throw error;
   }
 };
 
