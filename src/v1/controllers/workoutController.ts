@@ -98,7 +98,15 @@ export const deleteExistingWorkout = (req: Request, res: Response) => {
     const {
       params: { workoutId },
     } = req;
-    const deleteWorkout = deleteExistingWorkoutService(workoutId);
-    return res.status(201).send(deleteWorkout);
+    try {
+      const deleteWorkout = deleteExistingWorkoutService(workoutId);
+      return res.status(201).send(deleteWorkout);
+    } catch (error) {
+      if (error instanceof StatusError) {
+        return res
+          .status(error?.status || 500)
+          .send({ status: "FAILED", error: error?.message || error });
+      }
+    }
   }
 };

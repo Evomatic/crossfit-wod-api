@@ -104,9 +104,20 @@ export const updateExistingWorkout = (workoutId: string, body: Workout) => {
 };
 
 export const deleteExistingWorkout = (workoutId: string) => {
-  const result = workouts.filter((workout) => workout.id !== workoutId);
-  if (result.length === workouts.length)
-    return `Workout: ${workoutId} does not exist.`;
+  let result: Workouts = [];
+  try {
+    result = workouts.filter((workout) => workout.id !== workoutId);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
+  if (result.length === workouts.length) {
+    const statusError = new StatusError();
+    statusError.status = 404;
+    statusError.message = `Workout not found.`;
+    throw statusError;
+  }
   saveToDatabase(result);
   return "Workout deleted!";
 };
