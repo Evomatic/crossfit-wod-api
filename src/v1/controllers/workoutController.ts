@@ -100,7 +100,7 @@ export const deleteExistingWorkout = (req: Request, res: Response) => {
     } = req;
     try {
       const deleteWorkout = deleteExistingWorkoutService(workoutId);
-      return res.status(201).send(deleteWorkout);
+      return res.status(200).send(deleteWorkout);
     } catch (error) {
       if (error instanceof StatusError) {
         return res
@@ -109,4 +109,5 @@ export const deleteExistingWorkout = (req: Request, res: Response) => {
       }
     }
   }
+  return res.status(400).send({ errors: result.array() });
 };

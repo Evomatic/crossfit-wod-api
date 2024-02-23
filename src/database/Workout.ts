@@ -67,7 +67,7 @@ export const getExistingWorkout = (workoutId: string) => {
   if (result.length === 0) {
     const statusError = new StatusError();
     statusError.status = 404;
-    statusError.message = `Workout not found.`;
+    statusError.message = `Workout with id ${workoutId} does not exist.`;
     throw statusError;
   }
   const [workout] = result;
@@ -86,7 +86,7 @@ export const updateExistingWorkout = (workoutId: string, body: Workout) => {
   if (result.length === 0) {
     const statusError = new StatusError();
     statusError.status = 404;
-    statusError.message = `Workout not found.`;
+    statusError.message = `Workout with id ${workoutId} does not exist.`;
     throw statusError;
   }
   const [workout] = result;
@@ -115,9 +115,8 @@ export const deleteExistingWorkout = (workoutId: string) => {
   if (result.length === workouts.length) {
     const statusError = new StatusError();
     statusError.status = 404;
-    statusError.message = `Workout not found.`;
+    statusError.message = `Workout with id ${workoutId} does not exist.`;
     throw statusError;
   }
   saveToDatabase(result);
-  return "Workout deleted!";
 };
