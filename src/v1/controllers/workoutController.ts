@@ -28,10 +28,18 @@ export const getExistingWorkout = (req: Request, res: Response) => {
     const {
       params: { workoutId },
     } = req;
-    const existingWorkout = getExistingWorkoutService(workoutId);
-    return res.status(200).send(existingWorkout);
+    try {
+      const existingWorkout = getExistingWorkoutService(workoutId);
+      return res.status(200).send(existingWorkout);
+    } catch (error) {
+      if (error instanceof StatusError) {
+        return res
+          .status(error?.status || 500)
+          .send({ status: "FAILED", error: error?.message || error });
+      }
+    }
   }
-  return res.send({ errors: result.array() });
+  return res.status(400).send({ errors: result.array() });
 };
 
 export const createNewWorkout = (req: Request, res: Response) => {
@@ -73,7 +81,7 @@ export const updateExistingWorkout = (req: Request, res: Response) => {
     const updateWorkout = updateExistingWorkoutService(workoutId, body);
     return res.status(201).send(updateWorkout);
   }
-  return res.send({ errors: result.array() });
+  return res.status(400).send({ errors: result.array() });
 };
 
 export const deleteExistingWorkout = (req: Request, res: Response) => {

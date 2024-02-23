@@ -20,8 +20,13 @@ export const getAllWorkoutsService = () => {
 };
 
 export const getExistingWorkoutService = (workoutId: string) => {
-  const existingWorkout = getExistingWorkout(workoutId);
-  return existingWorkout;
+  try {
+    const existingWorkout = getExistingWorkout(workoutId);
+    return existingWorkout;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 export const createNewWorkoutService = (newWorkout: Workout) => {
