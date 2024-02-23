@@ -10,8 +10,13 @@ import { v4 as uuidv4 } from "uuid";
 import { newDate } from "../../database/utils";
 
 export const getAllWorkoutsService = () => {
-  const allWorkouts = getAllWorkouts();
-  return allWorkouts;
+  try {
+    const allWorkouts = getAllWorkouts();
+    return allWorkouts;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 export const getExistingWorkoutService = (workoutId: string) => {

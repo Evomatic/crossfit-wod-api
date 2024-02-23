@@ -10,8 +10,16 @@ import { validationResult } from "express-validator";
 import { Workout, StatusError } from "../../database/Workout";
 
 export const getAllWorkouts = (req: Request, res: Response) => {
-  const allWorkouts = getAllWorkoutsService();
-  return res.send({ status: "OK", data: allWorkouts });
+  try {
+    const allWorkouts = getAllWorkoutsService();
+    return res.status(200).send(allWorkouts);
+  } catch (error) {
+    if (error instanceof StatusError) {
+      return res
+        .status(error?.status || 500)
+        .send({ status: "FAILED", error: error?.message || error });
+    }
+  }
 };
 
 export const getExistingWorkout = (req: Request, res: Response) => {

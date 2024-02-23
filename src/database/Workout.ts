@@ -26,7 +26,13 @@ function filterWorkoutById(workoutId: string) {
 }
 
 export const getAllWorkouts = () => {
-  return workouts;
+  try {
+    return workouts;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
 };
 
 export const createNewWorkout = (newWorkout: Workout) => {
