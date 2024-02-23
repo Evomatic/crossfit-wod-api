@@ -78,8 +78,16 @@ export const updateExistingWorkout = (req: Request, res: Response) => {
       params: { workoutId },
       body,
     } = req;
-    const updateWorkout = updateExistingWorkoutService(workoutId, body);
-    return res.status(201).send(updateWorkout);
+    try {
+      const updateWorkout = updateExistingWorkoutService(workoutId, body);
+      return res.status(201).send(updateWorkout);
+    } catch (error) {
+      if (error instanceof StatusError) {
+        return res
+          .status(error?.status || 500)
+          .send({ status: "FAILED", error: error?.message || error });
+      }
+    }
   }
   return res.status(400).send({ errors: result.array() });
 };

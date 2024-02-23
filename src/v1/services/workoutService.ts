@@ -49,8 +49,13 @@ export const updateExistingWorkoutService = (
   workoutId: string,
   body: Workout
 ) => {
-  const updatedWorkout = updateExistingWorkout(workoutId, body);
-  return updatedWorkout;
+  try {
+    const updatedWorkout = updateExistingWorkout(workoutId, body);
+    return updatedWorkout;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 export const deleteExistingWorkoutService = (workoutId: string) => {

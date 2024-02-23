@@ -75,8 +75,20 @@ export const getExistingWorkout = (workoutId: string) => {
 };
 
 export const updateExistingWorkout = (workoutId: string, body: Workout) => {
-  const result = filterWorkoutById(workoutId);
-  if (result.length === 0) return `Workout: ${workoutId} does not exist.`;
+  let result: Workouts = [];
+  try {
+    result = filterWorkoutById(workoutId);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
+  if (result.length === 0) {
+    const statusError = new StatusError();
+    statusError.status = 404;
+    statusError.message = `Workout not found.`;
+    throw statusError;
+  }
   const [workout] = result;
 
   for (const [key, value] of Object.entries(body)) {

@@ -7,7 +7,7 @@ import {
   deleteExistingWorkout,
 } from "../controllers/workoutController";
 import bodyParser from "body-parser";
-import { check, param } from "express-validator";
+import { param, checkExact, body } from "express-validator";
 
 const jsonParser = bodyParser.json();
 
@@ -24,22 +24,24 @@ v1workoutRouter.get(
 v1workoutRouter.post(
   "/",
   jsonParser,
-  check(["name", "mode", "equipment", "exercises", "trainerTips"])
+  body(["name", "mode", "equipment", "exercises", "trainerTips"])
     .notEmpty()
     .escape()
     .withMessage(
       "The following key (path) is missing or is empty in request body."
     ),
+  checkExact(),
   createNewWorkout
 );
 
 v1workoutRouter.patch(
   "/:workoutId",
   jsonParser,
-  check(["name", "mode", "equipment", "exercises", "trainerTips"])
+  body(["name", "mode", "equipment", "exercises", "trainerTips"])
     .notEmpty()
     .optional()
     .escape(),
+  checkExact(),
   updateExistingWorkout
 );
 
