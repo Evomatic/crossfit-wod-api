@@ -36,6 +36,7 @@ v1workoutRouter.post(
 
 v1workoutRouter.patch(
   "/:workoutId",
+  param("workoutId").isUUID(4),
   jsonParser,
   body(["name", "mode", "equipment", "exercises", "trainerTips"])
     .notEmpty()
