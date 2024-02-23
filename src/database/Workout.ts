@@ -13,6 +13,10 @@ export type Workout = {
   trainerTips?: string[];
 };
 
+export class StatusError extends Error {
+  status: number | undefined;
+}
+
 export type Workouts = Workout[];
 
 const workouts = db.workouts as Workouts;
@@ -22,28 +26,69 @@ function filterWorkoutById(workoutId: string) {
 }
 
 export const getAllWorkouts = () => {
-  return workouts;
+  try {
+    return workouts;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
 };
 
 export const createNewWorkout = (newWorkout: Workout) => {
   const isAlreadyAdded =
     workouts.findIndex((workout) => workout.name === newWorkout.name) > -1;
-  if (isAlreadyAdded) return;
-  workouts.push(newWorkout);
-  saveToDatabase(workouts);
-  return newWorkout;
+  if (isAlreadyAdded) {
+    const statusError = new StatusError();
+    statusError.status = 400;
+    statusError.message = `Workout with the name ${newWorkout.name} already exists.`;
+    throw statusError;
+  }
+  try {
+    workouts.push(newWorkout);
+    saveToDatabase(workouts);
+    return newWorkout;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
 };
 
 export const getExistingWorkout = (workoutId: string) => {
-  const result = filterWorkoutById(workoutId);
-  if (result.length === 0) return `Workout: ${workoutId} does not exist.`;
+  let result: Workouts = [];
+  try {
+    result = filterWorkoutById(workoutId);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
+  if (result.length === 0) {
+    const statusError = new StatusError();
+    statusError.status = 404;
+    statusError.message = `Workout with id ${workoutId} does not exist.`;
+    throw statusError;
+  }
   const [workout] = result;
   return workout;
 };
 
 export const updateExistingWorkout = (workoutId: string, body: Workout) => {
-  const result = filterWorkoutById(workoutId);
-  if (result.length === 0) return `Workout: ${workoutId} does not exist.`;
+  let result: Workouts = [];
+  try {
+    result = filterWorkoutById(workoutId);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
+  if (result.length === 0) {
+    const statusError = new StatusError();
+    statusError.status = 404;
+    statusError.message = `Workout with id ${workoutId} does not exist.`;
+    throw statusError;
+  }
   const [workout] = result;
 
   for (const [key, value] of Object.entries(body)) {
@@ -59,9 +104,19 @@ export const updateExistingWorkout = (workoutId: string, body: Workout) => {
 };
 
 export const deleteExistingWorkout = (workoutId: string) => {
-  const result = workouts.filter((workout) => workout.id !== workoutId);
-  if (result.length === workouts.length)
-    return `Workout: ${workoutId} does not exist.`;
+  let result: Workouts = [];
+  try {
+    result = workouts.filter((workout) => workout.id !== workoutId);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
+  if (result.length === workouts.length) {
+    const statusError = new StatusError();
+    statusError.status = 404;
+    statusError.message = `Workout with id ${workoutId} does not exist.`;
+    throw statusError;
+  }
   saveToDatabase(result);
-  return "Workout deleted!";
 };

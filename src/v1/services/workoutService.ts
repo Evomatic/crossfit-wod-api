@@ -10,13 +10,23 @@ import { v4 as uuidv4 } from "uuid";
 import { newDate } from "../../database/utils";
 
 export const getAllWorkoutsService = () => {
-  const allWorkouts = getAllWorkouts();
-  return allWorkouts;
+  try {
+    const allWorkouts = getAllWorkouts();
+    return allWorkouts;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 export const getExistingWorkoutService = (workoutId: string) => {
-  const existingWorkout = getExistingWorkout(workoutId);
-  return existingWorkout;
+  try {
+    const existingWorkout = getExistingWorkout(workoutId);
+    return existingWorkout;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 export const createNewWorkoutService = (newWorkout: Workout) => {
@@ -26,19 +36,34 @@ export const createNewWorkoutService = (newWorkout: Workout) => {
     createdAt: newDate(),
     updatedAt: newDate(),
   };
-  const createdWorkout = createNewWorkout(workoutToInsert);
-  return createdWorkout;
+  try {
+    const createdWorkout = createNewWorkout(workoutToInsert);
+    return createdWorkout;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 export const updateExistingWorkoutService = (
   workoutId: string,
   body: Workout
 ) => {
-  const updatedWorkout = updateExistingWorkout(workoutId, body);
-  return updatedWorkout;
+  try {
+    const updatedWorkout = updateExistingWorkout(workoutId, body);
+    return updatedWorkout;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
 
 export const deleteExistingWorkoutService = (workoutId: string) => {
-  const deleteWorkout = deleteExistingWorkout(workoutId);
-  return deleteWorkout;
+  try {
+    const deleteWorkout = deleteExistingWorkout(workoutId);
+    return deleteWorkout;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 };
