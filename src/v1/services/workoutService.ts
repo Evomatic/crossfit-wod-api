@@ -1,17 +1,17 @@
 import {
-  Workout,
   getAllWorkouts,
   createNewWorkout,
   getExistingWorkout,
   updateExistingWorkout,
   deleteExistingWorkout,
 } from "../../database/Workout";
+import { FilterParams, Workout } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 import { newDate } from "../../database/utils";
 
-export const getAllWorkoutsService = () => {
+export const getAllWorkoutsService = (filterParams: FilterParams) => {
   try {
-    const allWorkouts = getAllWorkouts();
+    const allWorkouts = getAllWorkouts(filterParams);
     return allWorkouts;
   } catch (error) {
     console.log(error);

@@ -7,11 +7,13 @@ import {
 } from "../services/workoutService";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { Workout, StatusError } from "../../database/Workout";
+import { StatusError } from "../../database/Workout";
+import { FilterParams, Workout } from "../../types";
 
 export const getAllWorkouts = (req: Request, res: Response) => {
+  const { mode } = req.query as FilterParams;
   try {
-    const allWorkouts = getAllWorkoutsService();
+    const allWorkouts = getAllWorkoutsService({ mode });
     return res.status(200).send(allWorkouts);
   } catch (error) {
     if (error instanceof StatusError) {

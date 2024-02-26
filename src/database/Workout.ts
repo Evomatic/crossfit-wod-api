@@ -1,23 +1,10 @@
 import db from "./db.json";
 import { saveToDatabase, newDate } from "./utils";
-
-export type Workout = {
-  [key: string]: string | string[] | undefined;
-  id?: string;
-  name?: string;
-  mode?: string;
-  equipment?: string[];
-  exercises?: string[];
-  createdAt?: string;
-  updatedAt?: string;
-  trainerTips?: string[];
-};
+import { FilterParams, Workout, Workouts } from "../types";
 
 export class StatusError extends Error {
   status: number | undefined;
 }
-
-export type Workouts = Workout[];
 
 const workouts = db.workouts as Workouts;
 
@@ -25,8 +12,15 @@ function filterWorkoutById(workoutId: string) {
   return workouts.filter((workout) => workout.id === workoutId);
 }
 
-export const getAllWorkouts = () => {
+export const getAllWorkouts = (filterParams: FilterParams) => {
   try {
+    if (filterParams.mode) {
+      return workouts.filter((workout) => {
+        if (filterParams.mode) {
+          return workout.mode?.toLowerCase().includes(filterParams.mode);
+        }
+      });
+    }
     return workouts;
   } catch (error) {
     if (error instanceof Error) {
