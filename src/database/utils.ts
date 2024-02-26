@@ -1,5 +1,6 @@
 import fs from "fs";
 import { Workouts } from "./Workout";
+import bodyParser from "body-parser";
 
 export const saveToDatabase = (db: Workouts) => {
   fs.writeFileSync("./db.json", JSON.stringify(db, null, 2), {
@@ -9,3 +10,5 @@ export const saveToDatabase = (db: Workouts) => {
 
 export const newDate = () =>
   new Date().toLocaleString("en-US", { timeZone: "UTC" });
+
+export const jsonParser = bodyParser.json();

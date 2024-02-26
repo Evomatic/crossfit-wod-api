@@ -6,10 +6,9 @@ import {
   createNewWorkout,
   deleteExistingWorkout,
 } from "../controllers/workoutController";
-import bodyParser from "body-parser";
+import { getRecordForWorkoutController } from "../controllers/recordsController";
+import { jsonParser } from "../../database/utils";
 import { param, checkExact, body } from "express-validator";
-
-const jsonParser = bodyParser.json();
 
 export const v1workoutRouter: Router = express.Router();
 
@@ -19,6 +18,12 @@ v1workoutRouter.get(
   "/:workoutId",
   param("workoutId").isUUID(4),
   getExistingWorkout
+);
+
+v1workoutRouter.get(
+  "/:workoutId/records",
+  param("workoutId").isUUID(4),
+  getRecordForWorkoutController
 );
 
 v1workoutRouter.post(
