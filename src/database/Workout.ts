@@ -20,6 +20,16 @@ export const getAllWorkouts = (filterParams: FilterParams) => {
           return workout.mode?.toLowerCase().includes(filterParams.mode);
         }
       });
+    } else if (filterParams.equipment) {
+      //TODO Fix filtering not working properly
+      for (let i = 0; i < workouts.length; i++) {
+        if (workouts[i].equipment) {
+          workouts[i].equipment?.filter((equipment) => {
+            if (filterParams.equipment)
+              return equipment.toLowerCase().includes(filterParams.equipment);
+          });
+        }
+      }
     }
     return workouts;
   } catch (error) {
