@@ -21,15 +21,19 @@ export const getAllWorkouts = (filterParams: FilterParams) => {
         }
       });
     } else if (filterParams.equipment) {
-      const results: Workouts = [];
+      const filterWorkoutsBySpecificEquipment: Workouts = [];
       workouts.forEach((workout) => {
         workout.equipment?.forEach((item) => {
           if (item.toLowerCase().includes(filterParams.equipment as string)) {
-            results.push(workout);
+            filterWorkoutsBySpecificEquipment.push(workout);
           }
         });
       });
-      return results;
+      return filterWorkoutsBySpecificEquipment;
+    } else if (filterParams.length) {
+      return workouts.filter(
+        (_, index) => filterParams.length && index < filterParams.length
+      );
     }
     return workouts;
   } catch (error) {

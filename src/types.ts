@@ -1,6 +1,7 @@
 export type FilterParams = {
   mode?: string;
   equipment?: string;
+  length?: number;
 };
 
 export type Workout = {

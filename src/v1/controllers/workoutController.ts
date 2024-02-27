@@ -11,9 +11,9 @@ import { StatusError } from "../../database/Workout";
 import { FilterParams, Workout } from "../../types";
 
 export const getAllWorkouts = (req: Request, res: Response) => {
-  const { mode, equipment } = req.query as FilterParams;
+  const { mode, equipment, length } = req.query as FilterParams;
   try {
-    const allWorkouts = getAllWorkoutsService({ mode, equipment });
+    const allWorkouts = getAllWorkoutsService({ mode, equipment, length });
     return res.status(200).send(allWorkouts);
   } catch (error) {
     if (error instanceof StatusError) {
