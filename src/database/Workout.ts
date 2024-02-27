@@ -34,6 +34,18 @@ export const getAllWorkouts = (filterParams: FilterParams) => {
       return workouts.filter(
         (_, index) => filterParams.length && index < filterParams.length
       );
+    } else if (filterParams.sort) {
+      return workouts.toSorted((workoutA, workoutB) => {
+        if (workoutA.createdAt && workoutB.createdAt) {
+          const dateA = new Date(workoutA.createdAt);
+          const dateB = new Date(workoutB.createdAt);
+          if (filterParams.sort === "-createdat") {
+            return dateB.getTime() - dateA.getTime();
+          }
+          return dateA.getTime() - dateB.getTime();
+        }
+        return -1;
+      });
     }
     return workouts;
   } catch (error) {

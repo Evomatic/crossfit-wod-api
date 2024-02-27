@@ -2,6 +2,7 @@ export type FilterParams = {
   mode?: string;
   equipment?: string;
   length?: number;
+  sort?: "createdat" | "-createdat";
 };
 
 export type Workout = {
