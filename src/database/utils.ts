@@ -1,6 +1,6 @@
 import fs from "fs";
-import { Workouts } from "./Workout";
 import bodyParser from "body-parser";
+import { Workouts } from "../types";
 
 export const saveToDatabase = (db: Workouts) => {
   fs.writeFileSync("./db.json", JSON.stringify(db, null, 2), {

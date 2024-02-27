@@ -1,23 +1,10 @@
 import db from "./db.json";
 import { saveToDatabase, newDate } from "./utils";
-
-export type Workout = {
-  [key: string]: string | string[] | undefined;
-  id?: string;
-  name?: string;
-  mode?: string;
-  equipment?: string[];
-  exercises?: string[];
-  createdAt?: string;
-  updatedAt?: string;
-  trainerTips?: string[];
-};
+import { FilterParams, Workout, Workouts } from "../types";
 
 export class StatusError extends Error {
   status: number | undefined;
 }
-
-export type Workouts = Workout[];
 
 const workouts = db.workouts as Workouts;
 
@@ -25,8 +12,41 @@ function filterWorkoutById(workoutId: string) {
   return workouts.filter((workout) => workout.id === workoutId);
 }
 
-export const getAllWorkouts = () => {
+export const getAllWorkouts = (filterParams: FilterParams) => {
   try {
+    if (filterParams.mode) {
+      return workouts.filter((workout) => {
+        if (filterParams.mode) {
+          return workout.mode?.toLowerCase().includes(filterParams.mode);
+        }
+      });
+    } else if (filterParams.equipment) {
+      const filterWorkoutsBySpecificEquipment: Workouts = [];
+      workouts.forEach((workout) => {
+        workout.equipment?.forEach((item) => {
+          if (item.toLowerCase().includes(filterParams.equipment as string)) {
+            filterWorkoutsBySpecificEquipment.push(workout);
+          }
+        });
+      });
+      return filterWorkoutsBySpecificEquipment;
+    } else if (filterParams.length) {
+      return workouts.filter(
+        (_, index) => filterParams.length && index < filterParams.length
+      );
+    } else if (filterParams.sort) {
+      return workouts.toSorted((workoutA, workoutB) => {
+        if (workoutA.createdAt && workoutB.createdAt) {
+          const dateA = new Date(workoutA.createdAt);
+          const dateB = new Date(workoutB.createdAt);
+          if (filterParams.sort === "-createdat") {
+            return dateB.getTime() - dateA.getTime();
+          }
+          return dateA.getTime() - dateB.getTime();
+        }
+        return -1;
+      });
+    }
     return workouts;
   } catch (error) {
     if (error instanceof Error) {
