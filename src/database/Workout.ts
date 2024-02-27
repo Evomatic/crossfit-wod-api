@@ -21,15 +21,15 @@ export const getAllWorkouts = (filterParams: FilterParams) => {
         }
       });
     } else if (filterParams.equipment) {
-      //TODO Fix filtering not working properly
-      for (let i = 0; i < workouts.length; i++) {
-        if (workouts[i].equipment) {
-          workouts[i].equipment?.filter((equipment) => {
-            if (filterParams.equipment)
-              return equipment.toLowerCase().includes(filterParams.equipment);
-          });
-        }
-      }
+      const results: Workouts = [];
+      workouts.forEach((workout) => {
+        workout.equipment?.forEach((item) => {
+          if (item.toLowerCase().includes(filterParams.equipment as string)) {
+            results.push(workout);
+          }
+        });
+      });
+      return results;
     }
     return workouts;
   } catch (error) {
