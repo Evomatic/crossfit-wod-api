@@ -1,3 +1,4 @@
+import { RecordFilterParams } from "../types";
 import { StatusError } from "./Workout";
 import db from "./db.json";
 
@@ -26,4 +27,19 @@ export const getRecordForWorkout = (workoutId: string) => {
     throw statusError;
   }
   return results;
+};
+
+export const getAllRecords = (filterParams: RecordFilterParams) => {
+  try {
+    if (filterParams.length) {
+      return records.filter(
+        (_, index) => filterParams.length && index < filterParams.length
+      );
+    }
+    return records;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
 };
