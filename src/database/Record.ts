@@ -1,15 +1,6 @@
-import { RecordFilterParams } from "../types";
+import { RecordFilterParams, Records } from "../types";
 import { StatusError } from "../types";
 import db from "./db.json";
-
-type Record = {
-  id: string;
-  workout: string;
-  record: string;
-  createdAt: string;
-};
-
-type Records = Record[];
 
 const records = db.records as Records;
 export const getRecordForWorkout = (workoutId: string) => {
@@ -55,4 +46,23 @@ export const getAllRecords = (filterParams: RecordFilterParams) => {
       throw { status: 500, message: error?.message || error };
     }
   }
+};
+
+export const getExistingRecord = (recordId: string) => {
+  let result: Records = [];
+  try {
+    result = records.filter((record) => record.id === recordId);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
+  if (result.length === 0) {
+    const statusError = new StatusError();
+    statusError.status = 404;
+    statusError.message = `Record with id ${recordId} does not exist.`;
+    throw statusError;
+  }
+  const [record] = result;
+  return record;
 };

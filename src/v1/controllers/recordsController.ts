@@ -1,5 +1,6 @@
 import {
   getAllRecordsService,
+  getExistingRecordService,
   getRecordForWorkoutService,
 } from "../services/recordsService";
 import { Request, Response } from "express";
@@ -39,4 +40,24 @@ export const getAllRecordsController = (req: Request, res: Response) => {
         .send({ status: "FAILED", error: error?.message || error });
     }
   }
+};
+
+export const getExistingRecordController = (req: Request, res: Response) => {
+  const result = validationResult(req);
+  if (result.isEmpty()) {
+    const {
+      params: { recordId },
+    } = req;
+    try {
+      const existingRecord = getExistingRecordService(recordId);
+      return res.status(200).send(existingRecord);
+    } catch (error) {
+      if (error instanceof StatusError) {
+        return res
+          .status(error?.status || 500)
+          .send({ status: "FAILED", error: error?.message || error });
+      }
+    }
+  }
+  return res.status(400).send({ errors: result.array() });
 };

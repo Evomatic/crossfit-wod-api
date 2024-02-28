@@ -29,3 +29,12 @@ export type Workout = {
 };
 
 export type Workouts = Workout[];
+
+export type Record = {
+  id?: string;
+  workout?: string;
+  record?: string;
+  createdAt?: string;
+};
+
+export type Records = Record[];

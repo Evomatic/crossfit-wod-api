@@ -1,4 +1,8 @@
-import { getAllRecords, getRecordForWorkout } from "../../database/Record";
+import {
+  getAllRecords,
+  getExistingRecord,
+  getRecordForWorkout,
+} from "../../database/Record";
 import { WorkoutFilterParams } from "../../types";
 
 export const getRecordForWorkoutService = (workoutId: string) => {
@@ -15,6 +19,16 @@ export const getAllRecordsService = (filterParams: WorkoutFilterParams) => {
   try {
     const allRecords = getAllRecords(filterParams);
     return allRecords;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export const getExistingRecordService = (recordId: string) => {
+  try {
+    const existingRecord = getExistingRecord(recordId);
+    return existingRecord;
   } catch (error) {
     console.log(error);
     throw error;
