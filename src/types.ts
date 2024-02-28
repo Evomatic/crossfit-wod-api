@@ -1,8 +1,15 @@
-export type FilterParams = {
+type Sort = "createdat" | "-createdat";
+
+export type WorkoutFilterParams = {
   mode?: string;
   equipment?: string;
   length?: number;
-  sort?: "createdat" | "-createdat";
+  sort?: Sort;
+};
+
+export type RecordFilterParams = {
+  length?: number;
+  sort?: Sort;
 };
 
 export type Workout = {
