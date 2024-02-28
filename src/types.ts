@@ -1,3 +1,7 @@
+export class StatusError extends Error {
+  status: number | undefined;
+}
+
 type Sort = "createdat" | "-createdat";
 
 export type WorkoutFilterParams = {

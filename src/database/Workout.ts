@@ -1,10 +1,6 @@
 import db from "./db.json";
 import { saveToDatabase, newDate } from "./utils";
-import { WorkoutFilterParams, Workout, Workouts } from "../types";
-
-export class StatusError extends Error {
-  status: number | undefined;
-}
+import { WorkoutFilterParams, Workout, Workouts, StatusError } from "../types";
 
 const workouts = db.workouts as Workouts;
 

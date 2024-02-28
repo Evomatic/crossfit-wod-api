@@ -3,7 +3,7 @@ import {
   getRecordForWorkoutService,
 } from "../services/recordsService";
 import { Request, Response } from "express";
-import { StatusError } from "../../database/Workout";
+import { StatusError } from "../../types";
 import { validationResult } from "express-validator";
 import { RecordFilterParams } from "../../types";
 

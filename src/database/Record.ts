@@ -1,5 +1,5 @@
 import { RecordFilterParams } from "../types";
-import { StatusError } from "./Workout";
+import { StatusError } from "../types";
 import db from "./db.json";
 
 type Record = {

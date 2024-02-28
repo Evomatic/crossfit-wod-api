@@ -7,7 +7,7 @@ import {
 } from "../services/workoutService";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { StatusError } from "../../database/Workout";
+import { StatusError } from "../../types";
 import { WorkoutFilterParams, Workout } from "../../types";
 
 export const getAllWorkouts = (req: Request, res: Response) => {
