@@ -6,6 +6,7 @@ type Record = {
   id: string;
   workout: string;
   record: string;
+  createdAt: string;
 };
 
 type Records = Record[];
@@ -35,6 +36,18 @@ export const getAllRecords = (filterParams: RecordFilterParams) => {
       return records.filter(
         (_, index) => filterParams.length && index < filterParams.length
       );
+    } else if (filterParams.sort) {
+      return records.toSorted((recordA, recordB) => {
+        if (recordA.createdAt && recordB.createdAt) {
+          const dateA = new Date(recordA.createdAt);
+          const dateB = new Date(recordB.createdAt);
+          if (filterParams.sort === "-createdat") {
+            return dateB.getTime() - dateA.getTime();
+          }
+          return dateA.getTime() - dateB.getTime();
+        }
+        return -1;
+      });
     }
     return records;
   } catch (error) {
