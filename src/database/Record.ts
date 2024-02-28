@@ -1,8 +1,10 @@
 import { RecordFilterParams, Records } from "../types";
-import { StatusError } from "../types";
+import { StatusError, Record } from "../types";
 import db from "./db.json";
+import { saveToDatabase } from "./utils";
 
 const records = db.records as Records;
+
 export const getRecordForWorkout = (workoutId: string) => {
   let results: Records = [];
   try {
@@ -66,3 +68,26 @@ export const getExistingRecord = (recordId: string) => {
   const [record] = result;
   return record;
 };
+
+export const createNewRecord = (newRecord: Record) => {
+  console.log(newRecord);
+  const isAlreadyAdded =
+    records.findIndex((record) => record.id === newRecord.id) > -1;
+  console.log(isAlreadyAdded);
+  if (isAlreadyAdded) {
+    const statusError = new StatusError();
+    statusError.status = 400;
+    statusError.message = `Record with the id ${newRecord.id} already exists.`;
+    throw statusError;
+  }
+  try {
+    records.push(newRecord);
+    saveToDatabase(records);
+    return newRecord;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw { status: 500, message: error?.message || error };
+    }
+  }
+};
+//TODO Fix issue with inserting a new record that is already in the DB

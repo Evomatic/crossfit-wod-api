@@ -1,4 +1,5 @@
 import {
+  createNewRecordService,
   getAllRecordsService,
   getExistingRecordService,
   getRecordForWorkoutService,
@@ -6,7 +7,7 @@ import {
 import { Request, Response } from "express";
 import { StatusError } from "../../types";
 import { validationResult } from "express-validator";
-import { RecordFilterParams } from "../../types";
+import { RecordFilterParams, Record } from "../../types";
 
 export const getRecordForWorkoutController = (req: Request, res: Response) => {
   const result = validationResult(req);
@@ -60,4 +61,31 @@ export const getExistingRecordController = (req: Request, res: Response) => {
     }
   }
   return res.status(400).send({ errors: result.array() });
+};
+
+export const createNewRecordController = (req: Request, res: Response) => {
+  const result = validationResult(req);
+  if (result.isEmpty()) {
+    const {
+      body: { id, workout, record },
+    } = req;
+
+    const newRecord: Record = {
+      id,
+      workout,
+      record,
+    };
+
+    try {
+      const createNewRecord = createNewRecordService(newRecord);
+      return res.status(201).send(createNewRecord);
+    } catch (error) {
+      if (error instanceof StatusError) {
+        return res
+          .status(error?.status || 500)
+          .send({ status: "FAILED", error: error?.message || error });
+      }
+    }
+  }
+  return res.status(400).send({ error: result.array() });
 };
