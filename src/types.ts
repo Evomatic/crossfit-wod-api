@@ -1,8 +1,19 @@
-export type FilterParams = {
+export class StatusError extends Error {
+  status: number | undefined;
+}
+
+type Sort = "createdat" | "-createdat";
+
+export type WorkoutFilterParams = {
   mode?: string;
   equipment?: string;
   length?: number;
-  sort?: "createdat" | "-createdat";
+  sort?: Sort;
+};
+
+export type RecordFilterParams = {
+  length?: number;
+  sort?: Sort;
 };
 
 export type Workout = {
@@ -18,3 +29,12 @@ export type Workout = {
 };
 
 export type Workouts = Workout[];
+
+export type Record = {
+  id?: string;
+  workout?: string;
+  record?: string;
+  createdAt?: string;
+};
+
+export type Records = Record[];

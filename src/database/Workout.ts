@@ -1,10 +1,6 @@
 import db from "./db.json";
 import { saveToDatabase, newDate } from "./utils";
-import { FilterParams, Workout, Workouts } from "../types";
-
-export class StatusError extends Error {
-  status: number | undefined;
-}
+import { WorkoutFilterParams, Workout, Workouts, StatusError } from "../types";
 
 const workouts = db.workouts as Workouts;
 
@@ -12,7 +8,7 @@ function filterWorkoutById(workoutId: string) {
   return workouts.filter((workout) => workout.id === workoutId);
 }
 
-export const getAllWorkouts = (filterParams: FilterParams) => {
+export const getAllWorkouts = (filterParams: WorkoutFilterParams) => {
   try {
     if (filterParams.mode) {
       return workouts.filter((workout) => {

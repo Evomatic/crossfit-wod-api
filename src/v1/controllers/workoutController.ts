@@ -7,11 +7,11 @@ import {
 } from "../services/workoutService";
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { StatusError } from "../../database/Workout";
-import { FilterParams, Workout } from "../../types";
+import { StatusError } from "../../types";
+import { WorkoutFilterParams, Workout } from "../../types";
 
 export const getAllWorkouts = (req: Request, res: Response) => {
-  const { mode, equipment, length, sort } = req.query as FilterParams;
+  const { mode, equipment, length, sort } = req.query as WorkoutFilterParams;
   try {
     const allWorkouts = getAllWorkoutsService({
       mode,
