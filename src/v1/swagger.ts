@@ -1,22 +1,23 @@
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import { Express } from "express";
 
-const options = {
-  defintion: {
+const options: swaggerJSDoc.Options = {
+  definition: {
     openapi: "3.0.0",
     info: { title: "Crossfit WOD API", version: "1.0.0" },
-    apis: [
-      "./routes/workoutRoutes.ts",
-      "../database/Workout.ts",
-      "./routes/recordsRoutes.ts",
-      "../database/Record.ts",
-    ],
   },
+  apis: [
+    "./src/v1/routes/workoutRoutes.ts",
+    "./src/database/Workout.ts",
+    "./src/v1/routes/recordsRoutes.ts",
+    "./src/database/Record.ts",
+  ],
 };
 
 const swaggerSpec = swaggerJSDoc(options);
 
-const swaggerDocs = (app, port) => {
+const swaggerDocs = (app: Express, port: string | number) => {
   app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   app.get("/api/v1/docs.json", (req, res) => {
